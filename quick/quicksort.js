@@ -1,28 +1,25 @@
 var totalNumberOfComparisons = 0;
 
 function quicksort(array) {
-  console.log('input array: '+array);
-    if (array.length <= 1) {
+
+    if (array.length < 2) {
         return array;
     }
 
-  // var pivotIndex = choosePivot(array.length-1, 'first');
-  // array.swap(0, pivotIndex);
-
    var pivotIndex = 0;
-   var pivot = partition(array, pivotIndex);
-   console.log('pivot index: '+pivot);
-   console.log('pivot value: '+array[pivotIndex]);
+   var pivot = array[pivotIndex];
+
+   var rightMostElIndex = partition(array, pivotIndex);
+
+   array.swap(0, rightMostElIndex);
 
    // Create before-pivot and after-pivot arrays
-   var left  = array.slice(1, pivot);
-   var right = array.slice(pivot);
-   
-   console.log('left: '+left);console.log('right: '+right);
-   
+   var left  = array.slice(0, rightMostElIndex);
+   var right = array.slice(rightMostElIndex+1);
+
    totalNumberOfComparisons += array.length - 1;
-   console.log('# of comparisons: '+totalNumberOfComparisons);
-   return quicksort(left).concat(array[pivotIndex], quicksort(right));
+
+   return quicksort(left).concat(pivot, quicksort(right));
 }
 
 function partition(array, pivotIndex) {
@@ -33,7 +30,7 @@ function partition(array, pivotIndex) {
          i++;
       }
    }
-   return i;
+   return i-1;
 }
 
 function getRandomNumber(min, max) {
@@ -43,26 +40,9 @@ function getRandomNumber(min, max) {
 function getTotalNumberOfComparisons() {
    return totalNumberOfComparisons;
 }
-function setTotalNumberOfComparisons() {
-	totalNumberOfComparisons = 0;
-}
 
-function choosePivot(length, position) {
-   var pivotIndex;
-   switch (position) {
-      case 'first':
-         pivotIndex = 0;
-         break;
-      case 'final':
-         pivotIndex = length;
-         break;
-      case 'randrom':
-         pivotIndex = getRandomNumber(0, length);
-        break;
-      default:
-         alert ('choose pivot failed');
-   }
-   return pivotIndex;
+function setTotalNumberOfComparisons() {
+    totalNumberOfComparisons = 0;
 }
 
 Array.prototype.swap = function(a, b) {
