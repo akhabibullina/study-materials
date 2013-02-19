@@ -14,7 +14,13 @@
                   dataType: 'text',
                   success: function (data) {
                       var input = prepareData(data);
-                      console.log(min_cut(input));
+                      min_cut(input);
+                      console.log('RESULT');
+                      $.each(input, function (index, value) {
+                          console.log('index: ' + index);
+                          console.log('value: ' + value);
+                      })
+                      console.log(input);
                   },
                   error: function () {
                       alert('error');
