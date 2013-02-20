@@ -3,18 +3,25 @@ var min_cut = function (inputArray) {
     var length = Object.keys(inputArray).length;
 
     if (length <= 2) {
-        // Cut represented by final number of vertices / cut edges.
-        return inputArray;
+        // Cut represented by final number of cut edges.
+        var result = 0;
+        $.each(inputArray, function (vertex, subArray) {
+            result += subArray.length;
+        })
+        return result;
     }
 
     /* Pick a remaining edge (u,v) uniformly at random. */
 
     // Get random vertex start - 'u'.
 
+    var min_of_array = getKey(inputArray),
+        max_of_array = min_of_array + length - 1;
+
     var vertexStartRandIndex, verticesStartRowSubArray = [];
 
     while (typeof verticesStartRowSubArray === 'undefined' || verticesStartRowSubArray.length === 0) {
-        vertexStartRandIndex = getRandomArbitary(1, length);
+        vertexStartRandIndex = getRandomArbitary(min_of_array, max_of_array);
         verticesStartRowSubArray = inputArray[vertexStartRandIndex];
     }
     var vertexStartValue = vertexStartRandIndex;
@@ -22,8 +29,9 @@ var min_cut = function (inputArray) {
     
     // Get random vertex end - 'v' - from those in the appropriate row.
     var vertexEndRandIndex, vertexEndValue = vertexStartValue;
-    while (vertexEndValue === vertexStartValue) {
+    while (vertexEndValue === vertexStartValue || typeof vertexEndValue === 'undefined') {
         vertexEndRandIndex = getRandomArbitary(0, verticesStartRowSubArray.length - 1), // since arrays are counted starting from zero index.
+        // todo when length < 5 then subarray is of size 21 and full of undefined
         vertexEndValue = verticesStartRowSubArray[vertexEndRandIndex];
     }
 
@@ -35,16 +43,18 @@ var min_cut = function (inputArray) {
     var mergedVertexValue = Math.random() < 0.5 ? vertexStartValue : vertexEndValue;
         contractedVertexValue = mergedVertexValue === vertexStartValue ? vertexEndValue : vertexStartValue;
 
+    //todo: merged vertex: NaN, contracted vertex: 5 
     console.log('merged vertex: ' + mergedVertexValue + ', contracted vertex: ' + contractedVertexValue);
 
     // Copy edges to a merged vertex's adjacency list before removal.
     $.each(inputArray, function (currentVertexIndex, subArray) {
         if (parseInt(currentVertexIndex) === contractedVertexValue) {
             $.each(subArray, function (index, value) {
+                // todo: undefined
                 inputArray[mergedVertexValue].push(value);
             })
             // Remove contracted vertex.
-            delete inputArray[currentVertexIndex];
+            delete inputArray[parseInt(currentVertexIndex)];
         }
     })
     
@@ -52,7 +62,7 @@ var min_cut = function (inputArray) {
     $.each(inputArray, function (currentVertexIndex, subArray) {
         $.each(subArray, function (index, value) {
             if (value === contractedVertexValue) {
-                subArray.remove(index);
+                subArray.remove(parseInt(index));
             }
         })
     })
@@ -61,16 +71,18 @@ var min_cut = function (inputArray) {
     $.each(inputArray, function (currentVertexIndex, subArray) {
         $.each(subArray, function (index, value) {
             if (value === parseInt(currentVertexIndex)) {
-                subArray.remove(index);
+                subArray.remove(parseInt(index));
             }
         })
     })
+
     // Remove empty leaves
     $.each(inputArray, function (index, subArray) {
         if (subArray.length === 0) {
-            delete inputArray[index];
+            delete inputArray[parseInt(index)];
         }
     })
+    
 
     // Recursively call.
     min_cut(inputArray);
@@ -100,7 +112,11 @@ var prepareData = function (data) {
         var rowPartsOfNumbers = [];
         $.each(rowPartsOfStrings, function (index, value) {
             /* rowPartsOfNumbers example: [1, 2, 4] */
-            rowPartsOfNumbers[index] = parseInt(value);
+            var i = $.trim(index),
+                v = $.trim(value);
+            if (i !== '' && v!== '') {
+                rowPartsOfNumbers[parseInt(i)] = parseInt(v);
+            }
         })
         // Copy sub-arrays to main array such that:
         // index equals to vertixNumber + 1;
@@ -116,3 +132,9 @@ Array.prototype.remove = function (from, to) {
     this.length = from < 0 ? this.length + from : from;
     return this.push.apply(this, rest);
 };
+
+function getKey(data) {
+  for (var prop in data)
+    if (data.propertyIsEnumerable(prop))
+      return parseInt(prop);
+}

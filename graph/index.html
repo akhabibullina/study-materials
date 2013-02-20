@@ -13,14 +13,17 @@
                   url: "test.txt",
                   dataType: 'text',
                   success: function (data) {
+                      var totalResult = [];
                       var input = prepareData(data);
-                      min_cut(input);
-                      console.log('RESULT');
-                      $.each(input, function (index, value) {
-                          console.log('index: ' + index);
-                          console.log('value: ' + value);
-                      })
-                      console.log(input);
+                      var singleResult;
+                      for (var i = 0; i < 10; i++) {
+                        singleResult = min_cut(input);
+                        totalResult.push(singleResult);
+                        //console.log('RESULT: ' + totalResult);
+                      }
+                      // Augmenting the built-in Array object to find min value in the array.
+                      var min = Math.min.apply(Math, totalResult.slice(1, totalResult.length));
+                      console.log(min);
                   },
                   error: function () {
                       alert('error');
