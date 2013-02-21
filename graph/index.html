@@ -9,26 +9,43 @@
       Result:
       <script type="text/javascript">
           $(document).ready(function () {
+              // todo: find better way not to make http-request every time. for ex.,
+              // make deep copy of the input array and then use it in the loop. store the results in the array and then find the smallest value.
+              for (var i = 0; i < 1000; i++) {
               $.ajax({
                   url: "test.txt",
                   dataType: 'text',
                   success: function (data) {
-                      var totalResult = [];
+                      //var totalResult = [];
                       var input = prepareData(data);
                       var singleResult;
-                      for (var i = 0; i < 10; i++) {
+                       /*
+                      for (var i = 0; i < 3; i++) {
+                       
+                        var clone = $.map(input, function (obj) {
+                            return $.extend(true, {}, obj);
+                        });
+                        console.log(clone);
+                        
                         singleResult = min_cut(input);
                         totalResult.push(singleResult);
-                        //console.log('RESULT: ' + totalResult);
                       }
+                      */
+                      
                       // Augmenting the built-in Array object to find min value in the array.
-                      var min = Math.min.apply(Math, totalResult.slice(1, totalResult.length));
-                      console.log(min);
+                      //var min = Math.min.apply(Math, totalResult.slice(1, totalResult.length));
+                      //console.log(min);
+                      for (var i = 0; i < 2; i++) {
+                      singleResult = min_cut(input);
+                      console.log(singleResult);
+                      }
                   },
                   error: function () {
                       alert('error');
                   }
               });
+              }
+
           });
       </script>
    </body>

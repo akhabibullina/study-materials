@@ -8,6 +8,7 @@ var min_cut = function (inputArray) {
         $.each(inputArray, function (vertex, subArray) {
             result += subArray.length;
         })
+        
         return result;
     }
 
@@ -31,7 +32,6 @@ var min_cut = function (inputArray) {
     var vertexEndRandIndex, vertexEndValue = vertexStartValue;
     while (vertexEndValue === vertexStartValue || typeof vertexEndValue === 'undefined') {
         vertexEndRandIndex = getRandomArbitary(0, verticesStartRowSubArray.length - 1), // since arrays are counted starting from zero index.
-        // todo when length < 5 then subarray is of size 21 and full of undefined
         vertexEndValue = verticesStartRowSubArray[vertexEndRandIndex];
     }
 
@@ -40,25 +40,27 @@ var min_cut = function (inputArray) {
     /* Merge u and v into a single vertex. */
 
     // Choose between two values randomly.
-    var mergedVertexValue = Math.random() < 0.5 ? vertexStartValue : vertexEndValue;
-        contractedVertexValue = mergedVertexValue === vertexStartValue ? vertexEndValue : vertexStartValue;
-
-    //todo: merged vertex: NaN, contracted vertex: 5 
-    console.log('merged vertex: ' + mergedVertexValue + ', contracted vertex: ' + contractedVertexValue);
+//    var mergedVertexValue = Math.random() < 0.5 ? vertexStartValue : vertexEndValue,
+//        contractedVertexValue = mergedVertexValue === vertexStartValue ? vertexEndValue : vertexStartValue;
+        
+    var mergedVertexValue     = vertexStartValue,
+        contractedVertexValue = vertexEndValue;
+ 
+    //console.log('merged vertex: ' + mergedVertexValue + ', contracted vertex: ' + contractedVertexValue);
 
     // Copy edges to a merged vertex's adjacency list before removal.
-    $.each(inputArray, function (currentVertexIndex, subArray) {
-        if (parseInt(currentVertexIndex) === contractedVertexValue) {
+    $.each(inputArray, function (index, subArray) {
+        var currentVertexIndex = parseInt(index);
+        if (currentVertexIndex === contractedVertexValue) {
             $.each(subArray, function (index, value) {
-                // todo: undefined
                 inputArray[mergedVertexValue].push(value);
             })
             // Remove contracted vertex.
-            delete inputArray[parseInt(currentVertexIndex)];
+            delete inputArray[currentVertexIndex];
         }
     })
     
-    // Remove all the mentions of the contracted vertex in the other vertices.
+    // Remove all the mentions of the contracted vertex in all the vertices.
     $.each(inputArray, function (currentVertexIndex, subArray) {
         $.each(subArray, function (index, value) {
             if (value === contractedVertexValue) {
@@ -102,7 +104,7 @@ function getRandomArbitary(min, max) {
 
 var prepareData = function (data) {
     /* inputArrayOfRows example: ["1 2 4", "2 1 3 4", "3 2 4", "4 1 2 3"] */
-    var inputOfStrings = data.split('\n');
+    var inputOfStrings = data.split('\n'),
     inputOfNumbers = {},
     rowPartsOfStrings = [];
     // Reorganize array so as to use it easily.
@@ -115,7 +117,7 @@ var prepareData = function (data) {
             var i = $.trim(index),
                 v = $.trim(value);
             if (i !== '' && v!== '') {
-                rowPartsOfNumbers[parseInt(i)] = parseInt(v);
+                rowPartsOfNumbers[i] = parseInt(v);
             }
         })
         // Copy sub-arrays to main array such that:
@@ -138,3 +140,4 @@ function getKey(data) {
     if (data.propertyIsEnumerable(prop))
       return parseInt(prop);
 }
+
