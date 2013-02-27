@@ -23,7 +23,7 @@ var scc = function (G) {
     });
     $.each(leader, function(index, value){
         result[parseInt(value)] += 1;
-        //console.log(value);
+        // console.log(value);
     });
 
     return result;
@@ -117,7 +117,7 @@ function eliminateDuplicates(arr) {
    Result data example: {0=>[1, 5], 1=>[2, 4], 2=>[3, 1], 3=>[3, 2], 4=>[3, 6], 5=>[4, 10]} */
 var prepareInputData = function (data) {
     /* inputOfStrings example: ["1 5", "2 4", "3 14", "3 2"] */
-    var inputOfStrings = data.split('\r\n'),
+    var inputOfStrings = data.split('\n'),
     inputOfNumbers = {},
     rowPartsOfStrings = [];
     // Reorganize array so as to use it easily.
