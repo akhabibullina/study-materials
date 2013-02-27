@@ -14,8 +14,7 @@
                   dataType: 'text',
                   success: function (data) {
                       var G = prepareInputData(data);
-                      var Grev = prepareRevData($.extend(true, {}, G)); // = G with all arcs reversed
-                      var result = scc(Grev);
+                      var result = scc(G);
                       console.log(result);
                   },
                   error: function () {

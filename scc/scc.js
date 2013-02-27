@@ -8,12 +8,25 @@ var finishingTimes = {}; // store the finishing times
 var leader = {}; // store the leaders
 var exploredNodes = []; // if the node already seen
 
-var scc = function (Grev) {
+var scc = function (G) {
+    var Grev = prepareRevData($.extend(true, {}, G)); // = G with all arcs reversed
     /* Run DFSLoop on Grev to compute 'magical ordering' of nodes */
     dfs_loop(Grev);
     /* Run DFSLoop on G to discover the SCCs onebyone */
-    dfs_loop(finishingTimes);
-    return leader;
+    leader = {};
+    exploredNodes = [];
+    var GmagicalOrder = replaceNodesWithFinishingTimes(G);
+    dfs_loop(GmagicalOrder);
+    var result = [];
+    $.each(leader, function(index, value){
+        result[value] = 0;
+    });
+    $.each(leader, function(index, value){
+        result[parseInt(value)] += 1;
+        //console.log(value);
+    });
+
+    return result;
 }
 
 // Iterates over nodes.
@@ -41,13 +54,25 @@ function dfs(G, i) {
         if (tail === i) {
             // If head not explored yet, run depth first search.
             if (!isAlreadyExplored(head)) {
-                console.log(exploredNodes);
                dfs(G, head); 
             }
         }
     });
     processedNodes++;
     finishingTimes[i] = processedNodes;
+}
+
+// Replace node names with finishing times.
+function replaceNodesWithFinishingTimes (G) {
+    var GmagicalOrder = [];
+    $.each(G, function (index, edge) {
+        var maricalEdge = [];
+        $.each(edge, function(index, nodeValue) {
+            maricalEdge.push(finishingTimes[nodeValue]);
+        });
+        GmagicalOrder[index] = maricalEdge;
+    });
+    return GmagicalOrder;
 }
 
 // Find all the nodes in the graph given.
@@ -67,6 +92,20 @@ function isAlreadyExplored(node) {
     return $.inArray(node, exploredNodes) === -1 ? false : true;
 }
 
+function eliminateDuplicates(arr) {
+  var i,
+      len=arr.length,
+      out=[],
+      obj={};
+
+  for (i=0;i<len;i++) {
+    obj[arr[i]]=0;
+  }
+  for (i in obj) {
+    out.push(i);
+  }
+  return out;
+}
 /* Input data example:
     1 5
     2 4
