@@ -5,30 +5,49 @@ $processedNodes = 0; // # of nodes processed so far
 $finishingTimes = array(); // store the finishing times
 $leader = array(); // store the leaders
 $exploredNodes = array(); // if the node already seen
+$n = 875714; # Number of nodes
+$Grev = array();
+$G = array();
 
 // Open file for read and string modification 
 $file = "scc1.txt"; 
-$fh = fopen($file, 'r+'); 
-$contents = fread($fh, filesize($file)); 
-fclose($fh);
+
+$handle = @fopen($file, "r");
+// Read file line-by-line
+if ($handle) {
+    while (($singleLineBuffer = fgets($handle, 4096)) !== false) {
+        $vertices = explode(' ', trim($singleLineBuffer));
+        foreach ($vertices as $k => $vertex) {
+            $node = trim($vertex);
+            $formattedEdge[$k] = (int) $node;
+        }
+        // Populate graph contents.
+        $G[] = $formattedEdge;
+        $Grev[] = array_reverse($formattedEdge);
+    }
+    if (!feof($handle)) {
+        echo "Error: unexpected fgets() fail\n";
+    }
+    fclose($handle);
+}
 
 // Main
-$result = scc($contents);
-
+$result = scc($Grev);
 var_dump($result);
 
-function scc($data) {
-	$G = prepareData($data);
-	$Grev = reverseGraph($G);
+/* Auxilary functions come below */
 
-	/* Run DFS-Loop on Grev to compute 'magical ordering' of nodes */
-    dfs_loop($Grev);
+// Start point of the algorithm.
+function scc($data) {
+
+    /* Run DFS-Loop on Grev to compute 'magical ordering' of nodes */
+    dfs_loop($data);
 
     /* Run DFS-Loop on G to discover the SCCs one-by-one */
 	// Cleanup variables
     $GLOBALS['leader'] = array();
     $GLOBALS['exploredNodes'] = array();
-	$GmagicalOrder = replaceNodesWithFinishingTimes($G);
+	$GmagicalOrder = replaceNodesWithFinishingTimes();
 	dfs_loop($GmagicalOrder);
 	
 	$result = array();
@@ -46,8 +65,9 @@ function scc($data) {
 
 // Iterates over nodes.
 function dfs_loop ($G) {
-    $Gnodes = getNodesOfGraph($G);
-	$Glength = count($Gnodes);
+    $Gnodes = $GLOBALS['n']; //getNodesOfGraph($G);
+	// $Glength = count($Gnodes);
+        $Glength = $GLOBALS['n'];
 	for ($i = $Glength; $i > 1; $i--) {
 		if (!isAlreadyExplored($i)) {
 			$GLOBALS['s'] = $i;
@@ -58,7 +78,7 @@ function dfs_loop ($G) {
 
 // Iterates over edges for certain node.
 function dfs($G, $node) {
-	// Mark i as explored
+    // Mark i as explored
     array_push($GLOBALS['exploredNodes'], $node);
     // Set leader
     $GLOBALS['leader'][$node] = $GLOBALS['s'];
@@ -80,23 +100,10 @@ function dfs($G, $node) {
 function isAlreadyExplored($node) {
 	return in_array($node, $GLOBALS['exploredNodes']);
 }
-
-// Find all the nodes in the graph given.
-function getNodesOfGraph($G) {
-    $Gnodes = array();
-	foreach ($G as $key => $edge) {
-		foreach ($edge as $node) {
-			if (!in_array($node, $Gnodes)) {
-				$Gnodes[] = $node;
-			}
-		}
-	}
-
-    return $Gnodes;
-}
 	
 // Replace node names with finishing times.
-function replaceNodesWithFinishingTimes($G) {
+function replaceNodesWithFinishingTimes() {
+    $G = $GLOBALS['G'];
     $magicalEdge = array();
 	$GmagicalOrder = array();
 	foreach ($G as $key => $edge) {
@@ -107,28 +114,4 @@ function replaceNodesWithFinishingTimes($G) {
 	}
 
     return $GmagicalOrder;
-}
-
-// Reverse all arcs.
-function reverseGraph($G) {
-	foreach ($G as $key => $edges) {
-		$revGraph[$key] = array_reverse($edges); 
-	}
-    return $revGraph;
-}
-
-function prepareData($data) {
-	$dataEdgesArray = explode( "\n", $data );
-
-	foreach ($dataEdgesArray as $key => $edge) {
-		$vertices = explode(' ', trim($edge));
-		foreach ($vertices as $k => $vertex) {
-			$node = trim($vertex);
-			$formattedEdge[$k] = (int) $node;
-		}
-		$resultDataStructure[$key] = $formattedEdge;
-
-	}
-	return $resultDataStructure;
-
 }
