@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+   <head>
+      <title>Quiz Q 5</title>
+      <script type="text/javascript" src="dijkstra.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+   </head>
+   <body>
+      Result:
+      <script type="text/javascript">
+          $(document).ready(function () {
+              $.ajax({
+                  url: "test.txt",
+                  dataType: 'text',
+                  success: function (data) {
+                    var input = prepareInputData(data);
+                    var result = dijkstra(input);
+                    console.log(result);
+                  },
+                  error: function () {
+                      alert('error');
+                  }
+              });
+			});
+      </script>
+   </body>
+</html>
