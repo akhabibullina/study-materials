@@ -10,12 +10,12 @@
       <script type="text/javascript">
           $(document).ready(function () {
               $.ajax({
-                  url: "test.txt",
+                  url: "dijkstraData.txt",
                   dataType: 'text',
                   success: function (data) {
                     var input = prepareInputData(data);
                     var result = dijkstra(input);
-                    console.log(result);
+                    //7,37,59,82,99,115,133,165,188,197
                   },
                   error: function () {
                       alert('error');

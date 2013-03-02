@@ -1,8 +1,46 @@
 var s = 0; // # current source vertex
-var exploredNodes = []; // if the node already seen
+var exploredNodes  = [], // if the node already seen
+    shortestPaths  = []; // shortest paths distances
 
 var dijkstra = function (G) {
-   return result;
+   // init
+   s = 1;
+   exploredNodes.push(s);
+   shortestPaths[s]  = 0;
+   // main loop
+   while (exploredNodes.length < Object.keys(G).length) { // javascript sets 1st index of an array to zero
+      var weights = [];
+      // iterate over all the nodes in the explored area
+      $.each(exploredNodes, function(index, node) {
+         var headAndWeghts = G[node];
+         // iterate over all the edges of the current node
+         $.each(headAndWeghts, function(i, headAndWeght){
+             var head = +headAndWeght[0],
+                 weight = +headAndWeght[1];
+                 if (!isAlreadyExplored(head)) {
+                    if (head in weights) {
+                       // update only if new weight is less
+                       var updateWeightForNode = weight + (shortestPaths[node] || 0);
+                       weights[head] = (weights[head] < updateWeightForNode) ? weights[head] : updateWeightForNode;
+                    } else {
+                     weights[head] = weight + (shortestPaths[node] || 0);
+                    }
+                 }
+         });
+      });
+      // all the weight values for arcs that connect explored and non-explored areas.
+      var justWeights = weights.slice(0);
+      justWeights.sort(function(a,b){return a - b});
+      var minWeight = justWeights[0];
+
+      // debugger
+
+      s = weights.indexOf(minWeight);
+      shortestPaths[s] = minWeight || 1000000; // +infinity
+      exploredNodes.push(s);
+   }
+   
+   return shortestPaths;
 }
 
 /* Input data example:
