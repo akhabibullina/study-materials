@@ -2,13 +2,11 @@
 Input : unsorted array A of n integers. Target sum t.
 Goal : determine whether or not there are two numbers x,y in A with
 x + y = t
-
-t in the interval [30,60] inclusive
-
-Solution: 9
 -->
 
 <?php
+set_time_limit(0);
+
 // Globals: interval edge values.
 $minLimit = 2500;
 $maxLimit = 4000;
