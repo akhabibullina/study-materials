@@ -21,7 +21,7 @@ var HashTable = function (inputArray) {
    var hashCode = this.getHashCode(key); // bucket index
    // Hash function uses open addressing for solving the collisions
    // If bucket is empty put key, value into the bucket.
-   var hashFunction = function(hashCode) {
+   var openAddressing = function(hashCode) {
       if (typeof that.arrayOfBuckets[hashCode] === 'undefined') {
          that.arrayOfBuckets[hashCode] = [key, value];
          return;
@@ -29,10 +29,10 @@ var HashTable = function (inputArray) {
          // Collision has happened. Handle it according to one of two solution methods:
          // either open addressing or chaning. Now we use *open addressing*.
          console.log('Collision has happened :( with hash code ' + hashCode);
-         hashFunction(hashCode + step);
+         openAddressing(hashCode + step);
       }
    }
-   hashFunction(hashCode);
+   openAddressing(hashCode);
 }
 
    // Get value (provided key)
@@ -48,7 +48,7 @@ HashTable.prototype.get = function (key) {
 
    // Check if provided key equal to key from the bucket;
    // if yes then return value from the bucket.
-   var hashFunction = function (hashCode, key) {
+   var openAddressing = function (hashCode, key) {
       var keyAndValue = that.arrayOfBuckets[hashCode];
       var newKey = keyAndValue[0];
       if (+key === +newKey) {
@@ -56,13 +56,13 @@ HashTable.prototype.get = function (key) {
          return value;
       } else {
       // Continue search according to collision resolution method until you find the key.
-      hashFunction(hashCode + step, key);
+      openAddressing(hashCode + step, key);
       }
    }
-   return hashFunction(hashCode, key);
+   return openAddressing(hashCode, key);
 }
 
-   // Calculate hash code using key; it will be used as bucket index.
+   // Hash function: calculate hash code using key; it will be used as bucket index.
    HashTable.prototype.getHashCode = function (key) {
       return key % 5;
    }
