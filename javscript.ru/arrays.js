@@ -116,17 +116,19 @@ var list = {
 };
 
 function printList(list) {
-    if (Object.keys(list).length < 1) {
+    if (list === null) {
         return;
     }
-    for (var i = 0; i < Object.keys(list).length; i++) {
-        if (Object.keys(list[i]).length > 0) {
-            printList(list[i]);
-            delete list[i];
+
+    for (key in list) {
+        if (typeof list[key] === 'number') {
+            console.log(list[key]);
         } else {
-            console.log(list[i]);
+            printList(list[key]);
+            delete list[key];
         }
     }
-}
-printList(list);
 
+}
+
+printList(list);
