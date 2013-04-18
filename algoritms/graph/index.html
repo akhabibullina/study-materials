@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+   <head>
+      <title>Quiz Q 3</title>
+      <script type="text/javascript" src="min_cut.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+   </head>
+   <body>
+      Result:
+      <script type="text/javascript">
+          $(document).ready(function () {
+              // todo: find better way not to make http-request every time. for ex.,
+              // make deep copy of the input array and then use it in the loop. store the results in the array and then find the smallest value.
+              for (var i = 0; i < 1000; i++) {
+              $.ajax({
+                  url: "test.txt",
+                  dataType: 'text',
+                  success: function (data) {
+                      //var totalResult = [];
+                      var input = prepareData(data);
+                      var singleResult;
+                       /*
+                      for (var i = 0; i < 3; i++) {
+                       
+                        var clone = $.map(input, function (obj) {
+                            return $.extend(true, {}, obj);
+                        });
+                        console.log(clone);
+                        
+                        singleResult = min_cut(input);
+                        totalResult.push(singleResult);
+                      }
+                      */
+                      
+                      // Augmenting the built-in Array object to find min value in the array.
+                      //var min = Math.min.apply(Math, totalResult.slice(1, totalResult.length));
+                      //console.log(min);
+                      for (var i = 0; i < 2; i++) {
+                      singleResult = min_cut(input);
+                      console.log(singleResult);
+                      }
+                  },
+                  error: function () {
+                      alert('error');
+                  }
+              });
+              }
+
+          });
+      </script>
+   </body>
+</html>

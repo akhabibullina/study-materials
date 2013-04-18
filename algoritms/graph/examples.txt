@@ -1,0 +1,74 @@
+
+
+Here are some small test cases for the third programming assignment. Add your own below.
+
+The graph from Lecture 9-3: Answer 2
+
+1 2 4
+2 1 3 4
+3 2 4
+4 1 2 3
+
+The graph from the quiz in Lecture 9-1: Answer 2
+
+1 2 3 4
+2 1 3 4 5
+3 1 2 4 8
+4 1 2 3
+5 2 6 7 8 
+6 5 7 8
+7 5 6 8
+8 3 5 6 7
+
+A complete graph with five vertices joined to a complete graph with six vertices by one extra edge: Answer 1
+
+1 2 3 4 5
+2 1 3 4 5
+3 1 2 4 5
+4 1 2 3 5
+5 1 2 3 4 6
+6 5 7 8 9 10 11
+7 6 8 9 10 11
+8 6 7 9 10 11
+9 6 7 8 10 11
+10 6 7 8 9 11
+11 6 7 8 9 10
+
+A complete graph with five vertices joined to a complete graph with seven vertices by three extra edges: Answer 3
+
+1 2 3 4 5
+2 1 3 4 5 6
+3 1 2 4 5
+4 1 2 3 5 9
+5 1 2 3 4 12
+6 2 7 8 9 10 11 12
+7 6 8 9 10 11 12
+8 6 7 9 10 11 12
+9 4 6 7 8 10 11 12
+10 6 7 8 9 11 12
+11 6 7 8 9 10 12
+12 5 6 7 8 9 10 11
+
+A graph with twenty vertices: Answer 4
+
+1 2 3 4 5 6 7 14
+2 1 3 4 5 6 7 10 15
+3 1 2 5 6 7 13 16
+4 1 2 5 6 7 17
+5 1 2 3 4 6 7 18
+6 1 2 3 4 5 7 19
+7 1 2 3 4 5 6 20
+8 9 10 11 12 13 17
+9 8 10 11 12 13
+10 2 8 9 11 12 13
+11 8 9 10 12 13 20
+12 8 9 10 11 13
+13 3 8 9 10 11 12
+14 1 15 16 17 18 19 20
+15 2 14 16 17 18 19 20
+16 3 14 15 17 18 20
+17 4 8 14 15 16 18 19 20
+18 5 14 15 16 17 19 20
+19 6 14 15 17 18 20
+20 7 11 14 15 16 17 18 19
+
