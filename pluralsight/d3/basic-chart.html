@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>D3.js graph examples</title>
+    <style>
+        div {
+            margin: 20px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+<h3>Simple Bar Graph Example</h3>
+<script type="text/javascript">
+    var w = 300;
+    var h = 100;
+    var pad = 1;
+    var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
+
+    function colorPicker(v) {
+        if (v <= 10) {
+            return 'rgb(192, 192, 192)';
+        } else {
+            return 'rgb(50, 100, ' + v * 10 + ')'
+        }
+    }
+
+    var svg = d3.select('body')
+            .append('svg')
+            .attr('id', 'bar-chart')
+            .attr('width', w)
+            .attr('height', h);
+
+    // Bars
+    svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr({
+                x: function (d, i) {
+                    return i * (w / dataset.length)
+                },
+                y: function (d) {
+                    return h - d * 4;
+                },
+                width: w / dataset.length - pad,
+                height: function (d) {
+                    return d * 4;
+                }
+            })
+            .style('fill', function (d) {
+                return colorPicker(d)
+            });
+
+    // Labels
+    svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return d;
+            })
+            .attr({
+                'text-anchor': 'start',
+                'font-size': '12px',
+                fill: '#fff',
+                x: function (d, i) {
+                    return i * (w / dataset.length) + w / dataset.length * .25;
+                },
+                y: function (d) {
+                    return h - d * 4 + 14;
+                }
+            });
+
+</script>
+<h3>Simple Line Graph Example</h3>
+<script type="text/javascript">
+    var w = 300;
+    var h = 100;
+    var pad = 1;
+    var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
+
+    function colorPicker(v) {
+        if (v <= 10) {
+            return 'rgb(192, 192, 192)';
+        } else {
+            return 'rgb(50, 100, ' + v * 10 + ')'
+        }
+    }
+
+    var svg = d3.select('body')
+            .append('svg')
+            .attr('id', 'line-chart')
+            .attr('width', w)
+            .attr('height', h);
+
+    svg.selectAll('line')
+            .data(dataset)
+            .enter()
+            .append('line')
+            .attr({
+                x1: function (d, i) {
+                    return i * (w / dataset.length)
+                },
+                x2: function (d, i) {
+                    return (i + 1) * (w / dataset.length)
+                },
+                y1: function (d) {
+                    return h - d * 4;
+                },
+                y2: function (d) {
+                    return h - d * 4;
+                }
+            })
+            .style({
+                'stroke': function (d) {
+                    return colorPicker(d)
+                },
+                'stroke-width': 3
+            }
+    );
+
+    svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr({
+                x: function (d, i) {
+                    return i * (w / dataset.length)
+                },
+                y: function (d) {
+                    return h - d * 4;
+                },
+                width: w / dataset.length - pad,
+                height: function (d) {
+                    return d * 4;
+                }
+            })
+            .style(
+            {
+                'fill': 'rgb(95, 150, 230)',
+                opacity: .5
+            });
+
+</script>
+
+<h3>Simple Linear Graph Example: KPI</h3>
+<script type="text/javascript">
+    var w = 300;
+    var h = 100;
+    var pad = 1;
+    var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
+
+    function colorPicker(v) {
+        if (v <= 10) {
+            return 'rgb(192, 192, 192)';
+        } else {
+            return 'rgb(50, 100, ' + v * 10 + ')'
+        }
+    }
+
+    var svg = d3.select('body')
+            .append('svg')
+            .attr('id', 'linear-chart')
+            .attr('width', w)
+            .attr('height', h);
+
+    svg.selectAll('line')
+            .data(dataset)
+            .enter()
+            .append('line')
+            .attr({
+                x1: function (d, i) {
+                    return i * (w / dataset.length)
+                },
+                x2: function (d, i) {
+                    return (i + 1) * (w / dataset.length)
+                },
+                y1: function (d, i) {
+                    if (i === 0) {
+                        return h - d * 4;
+                    }
+                    return h - dataset[i - 1] * 4;
+                },
+                y2: function (d) {
+                    return h - d * 4;
+                }
+            })
+            .style({
+                'stroke': function (d) {
+                    return colorPicker(d)
+                },
+                'stroke-width': 2
+            }
+    );
+
+
+    function kpi(v) {
+        if (v <= 10) {
+            return 'rgb(192, 192, 192)';
+        } else {
+            return '#cc3366'
+        }
+    }
+
+    svg.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
+            .attr({
+                r: 3,
+                cx: function (d, i) {
+                    return i * (w / dataset.length) + 30
+                },
+                cy: function (d) {
+                    return h - d * 4;
+                }
+            })
+            .style({
+                'fill': function (d) {
+                    return kpi(d)
+                }
+            }
+    );
+
+</script>
+
+<h3>Simple BizLine Graph Example(Mirror): Labels </h3>
+<script type="text/javascript">
+    var w = 300;
+    var h = 100;
+    var pad = 1;
+    var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
+
+    var lineFun = d3.svg.line()
+            .x(function (d, i) {
+                return i * 30;
+            })
+            .y(function (d) {
+                return d * 4;
+            })
+            .interpolate('basis');
+
+    var svg = d3.select('body').append('svg').attr({'id': 'linear-chart', 'width': w, 'height': h});
+
+    var viz = svg.append('path')
+            .attr({
+                d: lineFun(dataset),
+                stroke: 'rgb(96,0,0)',
+                'stroke-width': 2,
+                fill: 'none'
+            });
+
+    svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return d;
+            })
+            .attr({
+                'text-anchor': 'start',
+                'font-size': '12px',
+                'font-family': 'sans-serif',
+                'font-weight': function (d, i) {
+                    if (i === 0 || i === dataset.length - 1) {
+                        return 'bold';
+                    }
+                },
+                x: function (d, i) {
+                    return i * 30;
+                },
+                y: function (d) {
+                    return d * 4;
+                }
+            });
+
+</script>
+
+<h3>Simple Scatter Plot Example: Min, Max</h3>
+<script type="text/javascript">
+    var w = 300;
+    var h = 100;
+    var pad = 1;
+    var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
+
+    function showMinMaxColor(val) {
+        var max = d3.max(dataset);
+        var min = d3.min(dataset);
+
+        if (val === max || val == min) {
+            return '#cc3366';
+        } else {
+            return 'rgb(192, 192, 192)'
+        }
+
+    }
+
+    function showMinMaxLabel(val) {
+        var max = d3.max(dataset);
+        var min = d3.min(dataset);
+
+        if (val === max || val == min) {
+            return val;
+        }
+
+    }
+
+    var svg = d3.select('body')
+            .append('svg')
+            .attr('id', 'linear-chart')
+            .attr('width', w)
+            .attr('height', h);
+
+    svg.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
+            .attr({
+                r: 3,
+                cx: function (d, i) {
+                    return i * (w / dataset.length) + 4
+                },
+                cy: function (d) {
+                    return h - d * 4 + 4;
+                }
+            })
+            .style({
+                'fill': function (d) {
+                    return showMinMaxColor(d)
+                }
+            }
+    );
+
+    // Labels
+    svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return showMinMaxLabel(d);
+            })
+            .attr({
+                'text-anchor': 'start',
+                'font-size': '12px',
+                'font-weight': 'bold',
+                x: function (d, i) {
+                    return i * (w / dataset.length) + w / dataset.length * .25;
+                },
+                y: function (d) {
+                    return h - d * 4 + 14;
+                }
+            });
+
+</script>
+</body>
+</html>
