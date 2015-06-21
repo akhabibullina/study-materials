@@ -15,6 +15,9 @@
             margin-left: 13%;
             width: 80%;
         }
+        h3 {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -365,7 +368,7 @@
             metrics.push("Sales Average: " + avg.toFixed(2));
 
             d3.select('#linear-csv-chart-wrapper')
-                    .style({ position: 'absolute', top: '45%', 'color': 'gray'})
+                    .style({ position: 'absolute', top: '40%', 'color': 'gray'})
                     .selectAll('span')
                     .data(metrics)
                     .enter()
@@ -438,6 +441,66 @@
                     }
                 });
 
+    </script>
+
+</div>
+
+<div>
+
+    <h3>Simple Graph Example(REST API)</h3>
+    <svg id="api-chart"></svg>
+    <p id="api-json-header"></p>
+    <script type="text/javascript">
+        var w = 400;
+        var h = 100;
+
+        function categoryColorPicker(type) {
+            if (type === 'Furniture') {
+                return 'rgb(50, 100, 250)';
+            } else {
+                return 'gray';
+            }
+        }
+
+        function showHeader(ds){
+            d3.select("#api-json-header")
+                    .style({ position: 'absolute', top: '85%', 'color': 'gray'})
+                    .append('span')
+                    .text(ds.category + " Sales (2013)")
+                    .style('color', categoryColorPicker(ds.category));
+        }
+
+        function buildLine(ds) {
+
+            var lineFun = d3.svg.line()
+                    .x(function (d) { return ((d.month-20130001)/3.25); })
+                    .y(function (d) { return h-d.sales; })
+                    .interpolate("linear");
+
+            var svg = d3.select("#api-chart").attr({ width:w, height: h}).style('margin-left', '-7%');
+
+            var viz = svg.append("path")
+                    .attr({
+                        d: lineFun(ds.monthlySales) //we have to reference the sales data array
+                    }).style({
+                        "stroke": categoryColorPicker(ds.category),
+                        'stroke-width': 2,
+                        fill: 'none'
+                    })
+
+        }
+
+        d3.xhr('https://api.github.com/repos/akhabibullina/study-materials/contents/pluralsight/d3/data/MonthlySalesbyCategoryMultiple.json', function (error, data) {
+            if (error) return;
+
+            var obj = JSON.parse(data.response);
+            var data = JSON.parse(window.atob(obj.content));
+
+            data.contents.forEach(function(d) {
+                showHeader(d);
+                buildLine(d);
+            })
+        });
     </script>
 
 </div>
