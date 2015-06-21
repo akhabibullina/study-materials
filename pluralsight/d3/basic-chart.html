@@ -451,7 +451,7 @@
     <svg id="api-chart"></svg>
     <p id="api-json-header"></p>
     <script type="text/javascript">
-        var w = 400;
+        var w = 300;
         var h = 100;
 
         function categoryColorPicker(type) {
@@ -472,12 +472,26 @@
 
         function buildLine(ds) {
 
+            var xScale = d3.scale
+                    .linear()
+                    .domain([
+                        d3.min(ds.monthlySales, function (d) { return d.month; }),
+                        d3.max(ds.monthlySales, function (d) {return d.month;})
+                    ])
+                    .range([0, w])
+                    .nice();
+
+            var yScale = d3.scale
+                    .linear()
+                    .domain([0, d3.max(ds.monthlySales, function(d) {return d.sales;})])
+                    .range([h, 0]);
+
             var lineFun = d3.svg.line()
-                    .x(function (d) { return ((d.month-20130001)/3.25); })
-                    .y(function (d) { return h-d.sales; })
+                    .x(function (d) { return xScale(d.month); })
+                    .y(function (d) { return yScale(d.sales); })
                     .interpolate("linear");
 
-            var svg = d3.select("#api-chart").attr({ width:w, height: h}).style('margin-left', '-25%');
+            var svg = d3.select("#api-chart").attr({ width:w, height: h});
 
             var viz = svg.append("path")
                     .attr({
