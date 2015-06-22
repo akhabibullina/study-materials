@@ -10,13 +10,21 @@
             width: 30%;
             height: 30%;
         }
+
         span {
             display: inline-block;
             margin-left: 13%;
             width: 80%;
         }
+
         h3 {
             margin-top: 0;
+        }
+        svg {
+            -webkit-transition: .5s ease-in-out;
+            -moz-transition: .5s ease-in-out;
+            -o-transition: .5s ease-in-out;
+            transition: .5s ease-in-out;
         }
         .axis path,
         .axis line {
@@ -362,11 +370,12 @@
                         fill: 'none'
                     });
 
-        };
+        }
+        ;
 
         function showMetrics(dataset) {
             var i = 0;
-            var metrics = [], total = avg =0;
+            var metrics = [], total = avg = 0;
 
             while (dataset[i]) {
                 total += +dataset[i].sales;
@@ -375,11 +384,11 @@
 
             avg = total / dataset.length;
 
-            metrics.push("Sales Total: "   + total + ' ');
+            metrics.push("Sales Total: " + total + ' ');
             metrics.push("Sales Average: " + avg.toFixed(2));
 
             d3.select('#linear-csv-chart-wrapper')
-                    .style({ position: 'absolute', top: '40%', 'color': 'gray'})
+                    .style({position: 'absolute', top: '40%', 'color': 'gray'})
                     .selectAll('span')
                     .data(metrics)
                     .enter()
@@ -475,9 +484,9 @@
             }
         }
 
-        function showHeader(ds){
+        function showHeader(ds) {
             d3.select("#api-json-header")
-                    .style({ position: 'absolute', top: '87%', 'color': 'gray'})
+                    .style({position: 'absolute', top: '87%', 'color': 'gray'})
                     .append('span')
                     .text(ds.category + " Sales (2013)")
                     .style('color', categoryColorPicker(ds.category));
@@ -485,24 +494,23 @@
 
         function showAxis(ds) {
 
-            var svg = d3.select("#api-chart")
+            var svg = d3.select("#api-chart");
 
+            var xAxisGen = d3.svg.axis().scale(xScale).orient('bottom').tickFormat(d3.time.format("%b"));
+            var yAxisGen = d3.svg.axis().scale(yScale).orient('left').ticks(4);
 
-            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').tickFormat(d3.time.format("%b"));
-            var yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(4);
-
-            svg.append('g').call(xAxis).attr({class: "axis", transform: "translate(0," + (h - padding) + ")"});
-            svg.append('g').call(yAxis).attr({class: "axis", transform:"translate(" + padding + ",0)"});
+            svg.append('g').call(xAxisGen).attr({class: "axis", transform: "translate(0," + (h - padding) + ")"});
+            svg.append('g').call(yAxisGen).attr({class: "axis", transform: "translate(" + padding + ",0)"});
         }
 
-        function getDate(d){
+        function getDate(d) {
 
             //20130101
             var strDate = new String(d);
 
-            var year = strDate.substr(0,4);
-            var month = strDate.substr(4,2)-1; //zero based index
-            var day = strDate.substr(6,2);
+            var year = strDate.substr(0, 4);
+            var month = strDate.substr(4, 2) - 1; //zero based index
+            var day = strDate.substr(6, 2);
 
             return new Date(year, month, day);
         }
@@ -511,23 +519,29 @@
         function buildLine(ds) {
 
             var minDate = getDate(ds.monthlySales[0]['month']);
-            var maxDate = getDate(ds.monthlySales[ds.monthlySales.length-1]['month']);
+            var maxDate = getDate(ds.monthlySales[ds.monthlySales.length - 1]['month']);
 
             xScale = d3.time.scale()
                     .domain([minDate, maxDate])
-                    .range([padding+5, w-padding]);
+                    .range([padding + 5, w - padding]);
 
             yScale = d3.scale
                     .linear()
-                    .domain([0, d3.max(ds.monthlySales, function(d) {return d.sales;})])
+                    .domain([0, d3.max(ds.monthlySales, function (d) {
+                        return d.sales;
+                    })])
                     .range([h - padding, 0]);
 
             var lineFun = d3.svg.line()
-                    .x(function (d) { return xScale(getDate(d.month)); })
-                    .y(function (d) { return yScale(d.sales); })
+                    .x(function (d) {
+                        return xScale(getDate(d.month));
+                    })
+                    .y(function (d) {
+                        return yScale(d.sales);
+                    })
                     .interpolate("linear");
 
-            var svg = d3.select("#api-chart").attr({ width:w, height: h});
+            var svg = d3.select("#api-chart").attr({width: w, height: h});
 
             var viz = svg.append("path")
                     .attr({
@@ -546,7 +560,7 @@
             var obj = JSON.parse(data.response);
             var data = JSON.parse(window.atob(obj.content));
 
-            data.contents.forEach(function(d) {
+            data.contents.forEach(function (d) {
                 showHeader(d);
                 buildLine(d);
                 showAxis(d);
@@ -555,6 +569,20 @@
     </script>
 
 </div>
+
+<script>
+
+    d3.select('body').selectAll('svg').on('mouseover', function() {
+        d3.select('#' + this.id).style("transform", "scale(1.25)");
+    });
+    d3.select('body').selectAll('svg').on('mouseout', function() {
+        d3.select('#' + this.id).style("transform", "scale(1)");
+    });
+
+    d3.select('body').selectAll('svg').call(d3.behavior.drag().on('dragstart', function (d) {
+        alert('Keep calm and do not drag :)');
+    }));
+</script>
 
 </body>
 </html>
