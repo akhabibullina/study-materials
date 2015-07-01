@@ -3,44 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>D3.js graph examples</title>
-    <style>
-        div {
-            margin: 20px;
-            float: left;
-            width: 30%;
-            height: 30%;
-        }
-
-        span {
-            display: inline-block;
-            margin-left: 13%;
-            width: 80%;
-        }
-
-        h3 {
-            margin-top: 0;
-        }
-        img {
-            width: 300px;
-        }
-        svg {
-            -webkit-transition: .5s ease-in-out;
-            -moz-transition: .5s ease-in-out;
-            -o-transition: .5s ease-in-out;
-            transition: .5s ease-in-out;
-        }
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: black;
-            shape-rendering: crispEdges;
-        }
-
-        .axis text {
-            font-family: sans-serif;
-            font-size: 10px;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
@@ -49,64 +12,7 @@
 
     <h3>Simple Bar Graph Example</h3>
     <svg id="bar-chart"></svg>
-    <script type="text/javascript">
-        var w = 300;
-        var h = 100;
-        var pad = 1;
-        var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
-
-        function colorPicker(v) {
-            if (v <= 10) {
-                return 'rgb(192, 192, 192)';
-            } else {
-                return 'rgb(50, 100, ' + v * 10 + ')'
-            }
-        }
-
-        var svg = d3.select('#bar-chart').attr({'width': w, 'height': h});
-
-        // Bars
-        svg.selectAll('rect')
-                .data(dataset)
-                .enter()
-                .append('rect')
-                .attr({
-                    x: function (d, i) {
-                        return i * (w / dataset.length)
-                    },
-                    y: function (d) {
-                        return h - d * 4;
-                    },
-                    width: w / dataset.length - pad,
-                    height: function (d) {
-                        return d * 4;
-                    }
-                })
-                .style('fill', function (d) {
-                    return colorPicker(d)
-                });
-
-        // Labels
-        svg.selectAll('text')
-                .data(dataset)
-                .enter()
-                .append('text')
-                .text(function (d) {
-                    return d;
-                })
-                .attr({
-                    'text-anchor': 'start',
-                    'font-size': '12px',
-                    fill: '#fff',
-                    x: function (d, i) {
-                        return i * (w / dataset.length) + w / dataset.length * .25;
-                    },
-                    y: function (d) {
-                        return h - d * 4 + 14;
-                    }
-                });
-
-    </script>
+    <script type="text/javascript" src="js/bar.js"></script>
 
 </div>
 
@@ -114,160 +20,15 @@
 
     <h3>Simple Scatter Plot Example: Min, Max</h3>
     <svg id="linear-extreme-chart"></svg>
-    <script type="text/javascript">
-        var w = 300;
-        var h = 100;
-        var pad = 1;
-        var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
-
-        function showMinMaxColor(val) {
-            var max = d3.max(dataset);
-            var min = d3.min(dataset);
-
-            if (val === max || val == min) {
-                return '#cc3366';
-            } else {
-                return 'rgb(192, 192, 192)'
-            }
-
-        }
-
-        function showMinMaxLabel(val) {
-            var max = d3.max(dataset);
-            var min = d3.min(dataset);
-
-            if (val === max || val == min) {
-                return val;
-            }
-
-        }
-
-        var svg = d3.select('#linear-extreme-chart').attr({'width': w, 'height': h});
-
-        svg.selectAll('circle')
-                .data(dataset)
-                .enter()
-                .append('circle')
-                .attr({
-                    r: 3,
-                    cx: function (d, i) {
-                        return i * (w / dataset.length) + 4
-                    },
-                    cy: function (d) {
-                        return h - d * 4 + 4;
-                    }
-                })
-                .style({
-                    'fill': function (d) {
-                        return showMinMaxColor(d)
-                    }
-                }
-        );
-
-        // Labels
-        svg.selectAll('text')
-                .data(dataset)
-                .enter()
-                .append('text')
-                .text(function (d) {
-                    return showMinMaxLabel(d);
-                })
-                .attr({
-                    'text-anchor': 'start',
-                    'font-size': '12px',
-                    'font-weight': 'bold',
-                    x: function (d, i) {
-                        return i * (w / dataset.length) + w / dataset.length * .25;
-                    },
-                    y: function (d) {
-                        return h - d * 4 + 14;
-                    }
-                });
-
-    </script>
+    <script type="text/javascript" src="js/extreme.js"></script>
 
 </div>
-
 
 <div>
 
     <h3>Simple Linear Graph Example: KPI</h3>
     <svg id="linear-kpi-chart"></svg>
-    <script type="text/javascript">
-        var w = 300;
-        var h = 100;
-        var pad = 1;
-        var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
-
-        function colorPicker(v) {
-            if (v <= 10) {
-                return 'rgb(192, 192, 192)';
-            } else {
-                return 'rgb(50, 100, ' + v * 10 + ')'
-            }
-        }
-
-        var svg = d3.select('#linear-kpi-chart').attr({'width': w, 'height': h});
-
-        svg.selectAll('line')
-                .data(dataset)
-                .enter()
-                .append('line')
-                .attr({
-                    x1: function (d, i) {
-                        return i * (w / dataset.length)
-                    },
-                    x2: function (d, i) {
-                        return (i + 1) * (w / dataset.length)
-                    },
-                    y1: function (d, i) {
-                        if (i === 0) {
-                            return h - d * 4;
-                        }
-                        return h - dataset[i - 1] * 4;
-                    },
-                    y2: function (d) {
-                        return h - d * 4;
-                    }
-                })
-                .style({
-                    'stroke': function (d) {
-                        return colorPicker(d)
-                    },
-                    'stroke-width': 2
-                }
-        );
-
-
-        function kpi(v) {
-            if (v <= 10) {
-                return 'rgb(192, 192, 192)';
-            } else {
-                return '#cc3366'
-            }
-        }
-
-        svg.selectAll('circle')
-                .data(dataset)
-                .enter()
-                .append('circle')
-                .attr({
-                    r: 3,
-                    cx: function (d, i) {
-                        return i * (w / dataset.length) + 30
-                    },
-                    cy: function (d) {
-                        return h - d * 4;
-                    }
-                })
-                .style({
-                    'fill': function (d) {
-                        return kpi(d)
-                    }
-                }
-        );
-
-    </script>
+    <script type="text/javascript" src="js/kpi.js"></script>
 
 </div>
 
@@ -275,71 +36,7 @@
 
     <h3>Simple Line Graph Example</h3>
     <svg id="line-chart"></svg>
-    <script type="text/javascript">
-        var w = 300;
-        var h = 100;
-        var pad = 1;
-        var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 23];
-
-        function colorPicker(v) {
-            if (v <= 10) {
-                return 'rgb(192, 192, 192)';
-            } else {
-                return 'rgb(50, 100, ' + v * 10 + ')'
-            }
-        }
-
-        var svg = d3.select('#line-chart').attr({'width': w, 'height': h});
-
-        svg.selectAll('line')
-                .data(dataset)
-                .enter()
-                .append('line')
-                .attr({
-                    x1: function (d, i) {
-                        return i * (w / dataset.length)
-                    },
-                    x2: function (d, i) {
-                        return (i + 1) * (w / dataset.length) - pad
-                    },
-                    y1: function (d) {
-                        return h - d * 4;
-                    },
-                    y2: function (d) {
-                        return h - d * 4;
-                    }
-                })
-                .style({
-                    'stroke': function (d) {
-                        return colorPicker(d)
-                    },
-                    'stroke-width': 3
-                }
-        );
-
-        svg.selectAll('rect')
-                .data(dataset)
-                .enter()
-                .append('rect')
-                .attr({
-                    x: function (d, i) {
-                        return i * (w / dataset.length)
-                    },
-                    y: function (d) {
-                        return h - d * 4;
-                    },
-                    width: w / dataset.length - pad,
-                    height: function (d) {
-                        return d * 4;
-                    }
-                })
-                .style(
-                {
-                    'fill': 'rgb(95, 150, 230)',
-                    opacity: .5
-                });
-
-    </script>
+    <script type="text/javascript" src="js/line.js"></script>
 
 </div>
 
@@ -348,66 +45,7 @@
     <h3>Simple Plot Example: load external .csv file</h3>
     <svg id="linear-csv-chart"></svg>
     <p id="linear-csv-chart-wrapper"></p>
-    <script type="text/javascript">
-        var w = 400;
-        var h = 100;
-
-        function drawGraph(dataset) {
-
-            var lineFun = d3.svg.line()
-                    .x(function (d, i) {
-                        return ((d.month - 20130001) / 3.25);
-                    })
-                    .y(function (d) {
-                        return h - d.sales;
-                    })
-                    .interpolate('linear');
-
-            var svg = d3.select('#linear-csv-chart').attr({'width': w, 'height': h});
-
-            svg.append('path')
-                    .attr({
-                        d: lineFun(dataset),
-                        stroke: 'rgb(96,0,0)',
-                        'stroke-width': 2,
-                        fill: 'none'
-                    });
-
-        }
-        ;
-
-        function showMetrics(dataset) {
-            var i = 0;
-            var metrics = [], total = avg = 0;
-
-            while (dataset[i]) {
-                total += +dataset[i].sales;
-                i++;
-            }
-
-            avg = total / dataset.length;
-
-            metrics.push("Sales Total: " + total + ' ');
-            metrics.push("Sales Average: " + avg.toFixed(2));
-
-            d3.select('#linear-csv-chart-wrapper')
-                    .style({position: 'absolute', top: '40%', 'color': 'gray'})
-                    .selectAll('span')
-                    .data(metrics)
-                    .enter()
-                    .append('span')
-                    .text(function (d) {
-                        return d;
-                    });
-        }
-
-        d3.csv('data/MonthlySales.csv', function (error, data) {
-            if (error) return;
-
-            drawGraph(data);
-            showMetrics(data);
-        });
-    </script>
+    <script type="text/javascript" src="js/linear-csv.js"></script>
 
 </div>
 
@@ -415,56 +53,7 @@
 
     <h3>Simple BizLine Graph Example(Mirror)</h3>
     <svg id="linear-chart"></svg>
-    <script type="text/javascript">
-        var w = 300;
-        var h = 100;
-        var pad = 1;
-        var dataset = [5, 10, 12, 20, 15, 7, 4, 22, 20, 25];
-
-        var lineFun = d3.svg.line()
-                .x(function (d, i) {
-                    return i * 30;
-                })
-                .y(function (d) {
-                    return d * 4;
-                })
-                .interpolate('basis');
-
-        var svg = d3.select('#linear-chart').attr({'width': w, 'height': h});
-
-        var viz = svg.append('path')
-                .attr({
-                    d: lineFun(dataset),
-                    stroke: 'rgb(96,0,0)',
-                    'stroke-width': 2,
-                    fill: 'none'
-                });
-
-        svg.selectAll('text')
-                .data(dataset)
-                .enter()
-                .append('text')
-                .text(function (d) {
-                    return d;
-                })
-                .attr({
-                    'text-anchor': 'start',
-                    'font-size': '12px',
-                    'font-family': 'sans-serif',
-                    'font-weight': function (d, i) {
-                        if (i === 0 || i === dataset.length - 1) {
-                            return 'bold';
-                        }
-                    },
-                    x: function (d, i) {
-                        return i * 30;
-                    },
-                    y: function (d) {
-                        return d * 4;
-                    }
-                });
-
-    </script>
+    <script type="text/javascript" src="js/linear.js"></script>
 
 </div>
 
@@ -473,109 +62,22 @@
     <h3>Axis Graph Example(REST API)</h3>
     <svg id="api-chart"></svg>
     <p id="api-json-header"></p>
-    <script type="text/javascript">
-        var w = 300;
-        var h = 100;
-        var padding = 30;
-        var xScale, yScale;
-
-        function categoryColorPicker(type) {
-            if (type === 'Furniture') {
-                return 'rgb(50, 100, 250)';
-            } else {
-                return 'gray';
-            }
-        }
-
-        function showHeader(ds) {
-            d3.select("#api-json-header")
-                    .style({position: 'absolute', top: '87%', 'color': 'gray'})
-                    .append('span')
-                    .text(ds.category + " Sales (2013)")
-                    .style('color', categoryColorPicker(ds.category));
-        }
-
-        function showAxis(ds) {
-
-            var svg = d3.select("#api-chart");
-
-            var xAxisGen = d3.svg.axis().scale(xScale).orient('bottom').tickFormat(d3.time.format("%b"));
-            var yAxisGen = d3.svg.axis().scale(yScale).orient('left').ticks(4);
-
-            svg.append('g').call(xAxisGen).attr({class: "axis", transform: "translate(0," + (h - padding) + ")"});
-            svg.append('g').call(yAxisGen).attr({class: "axis", transform: "translate(" + padding + ",0)"});
-        }
-
-        function getDate(d) {
-
-            //20130101
-            var strDate = new String(d);
-
-            var year = strDate.substr(0, 4);
-            var month = strDate.substr(4, 2) - 1; //zero based index
-            var day = strDate.substr(6, 2);
-
-            return new Date(year, month, day);
-        }
-
-
-        function buildLine(ds) {
-
-            var minDate = getDate(ds.monthlySales[0]['month']);
-            var maxDate = getDate(ds.monthlySales[ds.monthlySales.length - 1]['month']);
-
-            xScale = d3.time.scale()
-                    .domain([minDate, maxDate])
-                    .range([padding + 5, w - padding]);
-
-            yScale = d3.scale
-                    .linear()
-                    .domain([0, d3.max(ds.monthlySales, function (d) {
-                        return d.sales;
-                    })])
-                    .range([h - padding, 0]);
-
-            var lineFun = d3.svg.line()
-                    .x(function (d) {
-                        return xScale(getDate(d.month));
-                    })
-                    .y(function (d) {
-                        return yScale(d.sales);
-                    })
-                    .interpolate("linear");
-
-            var svg = d3.select("#api-chart").attr({width: w, height: h});
-
-            var viz = svg.append("path")
-                    .attr({
-                        d: lineFun(ds.monthlySales) //we have to reference the sales data array
-                    }).style({
-                        "stroke": categoryColorPicker(ds.category),
-                        'stroke-width': 2,
-                        fill: 'none'
-                    })
-
-        }
-
-        d3.xhr('https://api.github.com/repos/akhabibullina/study-materials/contents/pluralsight/d3/data/MonthlySalesbyCategoryMultiple.json', function (error, data) {
-            if (error) return;
-
-            var obj = JSON.parse(data.response);
-            var data = JSON.parse(window.atob(obj.content));
-
-            data.contents.forEach(function (d) {
-                showHeader(d);
-                buildLine(d);
-                showAxis(d);
-            })
-        });
-    </script>
+    <script type="text/javascript" src="js/axis.js"></script>
 
 </div>
 
 <div>
     <h3>Filter Example(Interactive)</h3>
-    <img src="img/tbc.jpg"/>
+    <svg id="filter-chart"></svg>
+    <p>Select Desired Period:
+        <select id="period">
+            <option value="12">All</option>
+            <option value="6">Last 6/mo</option>
+            <option value="3">Last Quater</option>
+        </select>
+    </p>
+
+    <script type="text/javascript" src="js/filter.js"></script>
 </div>
 
 <div>
@@ -583,19 +85,7 @@
     <img src="img/tbc.jpg"/>
 </div>
 
-<script>
-
-    d3.select('body').selectAll('svg').on('mouseover', function() {
-        d3.select('#' + this.id).style("transform", "scale(1.25)");
-    });
-    d3.select('body').selectAll('svg').on('mouseout', function() {
-        d3.select('#' + this.id).style("transform", "scale(1)");
-    });
-
-    d3.select('body').selectAll('svg').call(d3.behavior.drag().on('dragstart', function (d) {
-        alert('Keep calm and do not drag :)');
-    }));
-</script>
+<script src="js/main.js"></script>
 
 </body>
 </html>
