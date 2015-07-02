@@ -82,6 +82,7 @@ function buildFilterLine(ds) {
 
   var viz = svg.append("path")
     .attr({
+      class: ds.category,
       d: lineFun(ds.monthlySales) //we have to reference the sales data array
     }).style({
       "stroke": categoryColorPicker(ds.category),
@@ -91,7 +92,7 @@ function buildFilterLine(ds) {
 
 }
 
-function updateFilterLine(ds) {
+function updateFilterLine(ds, category) {
 
   var minDate = getDate(ds[0]['month']);
   var maxDate = getDate(ds[ds.length - 1]['month']);
@@ -118,13 +119,13 @@ function updateFilterLine(ds) {
 
   var svg = d3.selectAll("#filter-chart");
 
-  var viz = svg
+  var viz = svg.selectAll('path.' + category)
     .attr({
       d: lineFun(ds) //we have to reference the sales data array
     });
 }
 
-d3.xhr('https://api.github.com/repos/akhabibullina/study-materials/contents/pluralsight/d3/data/MonthlySalesbyCategoryMultiple.json', function (error, data) {
+d3.xhr('https://api.github.com/repos/bsullins/d3js-resources/contents/monthlySalesbyCategoryMultiple.json', function (error, data) {
   if (error) return;
 
   var obj = JSON.parse(data.response);
@@ -139,8 +140,9 @@ d3.xhr('https://api.github.com/repos/akhabibullina/study-materials/contents/plur
   d3.select("#period").on('change', function() {
     var selected = this.value;
     data.contents.forEach(function (d) {
-      var ds = d.monthlySales.splice(0,d.monthlySales.length-selected);
-      updateFilterLine(ds);
+      var monthlySales = d.monthlySales;
+      var ds = d.monthlySales.slice(0, selected);
+      updateFilterLine(ds, d.category);
       updateFilterAxis(ds);
     });
   })

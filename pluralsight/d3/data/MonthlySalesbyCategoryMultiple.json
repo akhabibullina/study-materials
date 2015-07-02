@@ -4,7 +4,15 @@
     "region": "West",
     "monthlySales":
 
-      [{
+    [{
+      "month":20130101,
+      "sales":38
+    },
+      {
+        "month":20130201,
+        "sales":35
+      },
+      {
         "month":20130301,
         "sales":41
       },
@@ -51,7 +59,15 @@
     "region": "West",
     "monthlySales":
 
-      [{
+    [{
+      "month":20130101,
+      "sales":54
+    },
+      {
+        "month":20130201,
+        "sales":66
+      },
+      {
         "month":20130301,
         "sales":77
       },
@@ -93,4 +109,4 @@
       }
     ]
   }
-]} 
+]};
