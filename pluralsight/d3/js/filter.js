@@ -120,6 +120,8 @@ function updateFilterLine(ds, category) {
   var svg = d3.selectAll("#filter-chart");
 
   var viz = svg.selectAll('path.' + category)
+    .transition()   //add the transition and you're done!
+    .duration(500)  //set the duration for more control
     .attr({
       d: lineFun(ds) //we have to reference the sales data array
     });

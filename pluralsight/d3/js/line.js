@@ -36,8 +36,7 @@ svg.selectAll('line')
       return colorPicker(d)
     },
     'stroke-width': 3
-  }
-);
+  });
 
 svg.selectAll('rect')
   .data(dataset)
@@ -59,4 +58,8 @@ svg.selectAll('rect')
   {
     'fill': 'rgb(95, 150, 230)',
     opacity: .5
+  })
+  .append("title")
+  .text(function (d) {
+    return d;
   });

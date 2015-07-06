@@ -34,3 +34,12 @@ svg {
     font-family: sans-serif;
     font-size: 10px;
 }
+
+.tooltip {
+    width: 20px;
+    height: 15px;
+    color: white;
+    text-anchor: "middle";
+    font-size: 11px;
+    background-color: lightcyan;
+}
