@@ -45,7 +45,12 @@ svg.selectAll('circle')
       return showMinMaxColor(d)
     }
   }
-);
+).on('mousemove', function () {
+    d3.select(this).transition().duration(400).ease("linear").attr('r', 6);
+  })
+  .on('mouseleave', function () {
+    d3.select(this).transition().duration(400).ease("linear").attr('r', 3);
+  });
 
 // Labels
 svg.selectAll('text')

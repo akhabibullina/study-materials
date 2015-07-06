@@ -1,5 +1,5 @@
 d3.select('body').selectAll('svg').on('mouseover', function() {
-  if (this.id === 'filter-chart' || this.id === 'tooltip-chart') {
+  if (this.id === 'filter-chart' || this.id === 'linear-extreme-chart') {
     return;
   }
   d3.select('#' + this.id).style("transform", "scale(1.1)");
