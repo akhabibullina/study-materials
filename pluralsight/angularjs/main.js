@@ -4,18 +4,29 @@
 (function(){
   var app = angular.module('MyGithubApp',[]);
 
-  var MainController = function($scope, $http) {
+  var MainController = function($scope, $http, $interval) {
 
     var url = 'https://api.github.com/users/';
     var defaultUser = 'Angular';
+    var countdownInterval = null;
 
     $scope.message = "Hello, ";
     $scope.username = 'Angular';
+    $scope.repoSortOrder = '-stargazers_count';
     $scope.url = url + defaultUser;
+    $scope.count = 3;
+
+    $scope.changeColor = function() {
+        $scope.personColour = {color: 'red'};
+    };
 
     $scope.search = function() {
       $scope.url = url + ($scope.username || defaultUser);
       $http.get($scope.url).then(onUserComplete, onError);
+      if(countdownInterval) {
+        $interval.cancel(countdownInterval);
+        $scope.count = null;
+      }
     }
 
     function onUserComplete(response){
@@ -32,9 +43,14 @@
       $scope.error = "Could not fetch the user";
     }
 
-    $http.get($scope.url).then(onUserComplete, onError);
+    countdownInterval = $interval(function() {
+      $scope.count -= 1;
+      if ($scope.count < 1) {
+        $scope.search($scope.username);
+      }
+    }, 1000);
 
   };
 
-  app.controller("MainController", ["$scope", "$http", MainController]);
+  app.controller("MainController", ["$scope", "$http", "$interval", MainController]);
 })();

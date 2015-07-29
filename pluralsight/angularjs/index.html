@@ -13,31 +13,15 @@
 </head>
 <body>
     <div id="person" ng-controller="MainController">
-        <p>{{message}} {{username}} !</p>
+        <p ng-style="personColour" ng-mouseover="changeColor()">{{message}} {{username}} !</p>
+        {{count}}
         <form ng-submit="search()">
             <input type="text" placeholder="username" ng-model="username"/>
             <input type="button" value="submit" ng-click="search()">
         </form>
         <!--<p id="error">Error: {{error}}</p>-->
-        <p ng-model="person.name">Name: {{person.name}}</p>
-        <p>Email: {{person.email}}</p>
-        <p><img ng-src="{{person.avatar_url}}"/></p>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Stars</th>
-                <th>Language</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="repo in repos | orderBy:repoSortOrder">
-                <td>{{repo.name}}</td>
-                <td>{{repo.stargazers_count | number}}</td>
-                <td>{{repo.language}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div ng-include="'persondetails.html'" ng-show="person"></div>
     </div>
+
 </body>
 </html>
