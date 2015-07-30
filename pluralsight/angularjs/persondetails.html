@@ -1,25 +1,27 @@
-<p ng-model="person.name">Name: {{person.name}}</p>
-Order:
-<select ng-model="repoSortOrder">
-    <option value="+name">Name</option>
-    <option value="-language">Language</option>
-    <option value="-stargazers_count">Stars</option>
-</select>
-<p>Email: {{person.email}}</p>
-<p><img ng-src="{{person.avatar_url}}"/></p>
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Stars</th>
-        <th>Language</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="repo in repos | orderBy:repoSortOrder | limitTo: 5">
-        <td>{{repo.name}}</td>
-        <td>{{repo.stargazers_count | number}}</td>
-        <td>{{repo.language}}</td>
-    </tr>
-    </tbody>
-</table>
+<div id="userDetails">
+    <p ng-model="person.name">Name: {{person.name}}</p>
+    Order:
+    <select ng-model="repoSortOrder">
+        <option value="+name">Name</option>
+        <option value="-language">Language</option>
+        <option value="-stargazers_count">Stars</option>
+    </select>
+    <p>Email: {{person.email}}</p>
+    <p><img ng-src="{{person.avatar_url}}"/></p>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Stars</th>
+            <th>Language</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="repo in repos | orderBy:repoSortOrder | limitTo: 5">
+            <td>{{repo.name}}</td>
+            <td>{{repo.stargazers_count | number}}</td>
+            <td>{{repo.language}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
