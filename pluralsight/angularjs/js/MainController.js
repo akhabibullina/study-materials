@@ -34,8 +34,8 @@
 
     function onRepos(data){
       $scope.repos = data;
-      $location.hash('userDetails');
-      $anchorScroll();
+      //$location.hash('userDetails');
+      //$anchorScroll();
     }
 
     function onError(error){

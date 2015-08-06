@@ -3,11 +3,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>My AngularJs file</title>
-    <script data-require="angular.js@*" data-semver="1.3.0-beta.5" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-    <!--<script data-require="angular-route@*" data-semver="1.2.14" src="http://code.angularjs.org/1.2.14/angular-route.js"></script>-->
+    <script data-require="angular.js@*" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+    <script data-require="angular-route@*" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.min.js"></script>
 
     <script src="app.js"></script>
-    <script src="MainController.js"></script>
+    <script src="js/MainController.js"></script>
+    <script src="js/UserController.js"></script>
+    <script src="js/RepoController.js"></script>
     <script src="services/github.js"></script>
     <style>
         img {
@@ -15,17 +17,8 @@
         }
     </style>
 </head>
-<body>
-    <div id="person" ng-controller="MainController">
-        <p ng-style="personColour" ng-mouseover="changeColor()">{{message}} {{username}} !</p>
-        {{count}}
-        <form ng-submit="search()">
-            <input type="text" placeholder="username" ng-model="username"/>
-            <input type="button" value="submit" ng-click="search()">
-        </form>
-        <!--<p id="error">Error: {{error}}</p>-->
-        <div ng-include="'persondetails.html'" ng-show="person"></div>
-    </div>
-
+<body ng-controller="MainController">
+    <p ng-style="personColour" ng-mouseover="changeColor()">{{message}} {{username}} !</p>
+    <div ng-view></div>
 </body>
 </html>
