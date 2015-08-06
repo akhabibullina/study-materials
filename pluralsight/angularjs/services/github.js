@@ -26,7 +26,7 @@
   }
 
   // Register the service in the module
-  var module = angular.module('MyGithubApp');
+  var module = angular.module('githubViewer');
   module.factory('github', github);
 
 })();

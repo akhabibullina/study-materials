@@ -3,7 +3,7 @@
  */
 (function(){
 
-  var app = angular.module('MyGithubApp', []);
+  var app = angular.module('githubViewer');
 
   var MainController = function($scope, github, $interval, $log, $anchorScroll, $location) {
 

@@ -13,9 +13,9 @@
 
   app.config(function($routeProvider, $locationProvider){
     $routeProvider
-      .when("/main", {
+      .when("/", {
         templateUrl: "html/main.html",
-        controller: "js/MainController"
+        controller: "MainController"
       })
       .when("/user/:username", {
         templateUrl: "html/user.html",
