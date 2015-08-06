@@ -2,7 +2,9 @@
  * Created by admin on 7/28/2015.
  */
 (function(){
+
   var app = angular.module('MyGithubApp', []);
+
   var MainController = function($scope, github, $interval, $log, $anchorScroll, $location) {
 
     var countdownInterval = null;
@@ -27,13 +29,13 @@
 
     function onUserComplete(data){
       $scope.person = data;
-      github.getRepos($scope.person.data).then(onRepos, onError);
+      github.getRepos($scope.person).then(onRepos, onError);
     }
 
     function onRepos(data){
       $scope.repos = data;
-      //$location.hash('userDetails');
-      //$anchorScroll();
+      $location.hash('userDetails');
+      $anchorScroll();
     }
 
     function onError(error){
