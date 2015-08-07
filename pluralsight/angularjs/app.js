@@ -11,7 +11,7 @@
   //  $route.reload();
   //}]);
 
-  app.config(function($routeProvider, $locationProvider){
+  app.config(function($routeProvider){
     $routeProvider
       .when("/", {
         templateUrl: "html/main.html",
@@ -19,16 +19,14 @@
       })
       .when("/user/:username", {
         templateUrl: "html/user.html",
-        controller: "js/UserController"
+        controller: "UserController"
       })
       .when("/repo/:username/:reponame", {
         templateUrl: "html/repo.html",
-        controller: "js/RepoController"
+        controller: "RepoController"
       })
       .otherwise({redirectTo:"/"});
 
-    //$locationProvider
-    //  .html5Mode({enabled:true, requireBase:false});
   });
 
 

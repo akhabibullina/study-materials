@@ -1,0 +1,19 @@
+<div id="repoDetails">
+    <p ng-model="repo.name">Name: {{repo.name}}</p>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Photo</th>
+            <th>Contributions #</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="contributor in repo.contributors | orderBy:repoSortOrder | limitTo: 5">
+            <td>{{contributor.login}}</td>
+            <td><img ng-src="{{contributor.avatar_url}}"/></td>
+            <td>{{contributor.contributions}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
